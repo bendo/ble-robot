@@ -107,50 +107,52 @@ bool isMoving = false;
 
 bool control()
 {
-	if (packetbuffer[1] == 'B') {
-		uint8_t buttnum = packetbuffer[2] - '0';
-		boolean pressed = packetbuffer[3] - '0';
-		// Serial.println(buttnum);
-		Serial.println(isMoving);
-		if (pressed) {
-			isMoving = true;
-			if (buttnum == 5) {
-				L_MOTOR -> run(FORWARD);
-				R_MOTOR -> run(FORWARD);
+	uint8_t buttnum = packetbuffer[0] - '0';
+	boolean pressed = packetbuffer[1] - '0';
+	// Serial.println(buttnum);
+	Serial.print("isMoving: ");
+	Serial.print(isMoving);
+	Serial.print(" | button: ");
+	Serial.print(buttnum);
+	Serial.print(" | pressed: ");
+	Serial.println(pressed);
+	if (pressed) {
+		isMoving = true;
+		if (buttnum == 5) {
+			L_MOTOR -> run(FORWARD);
+			R_MOTOR -> run(FORWARD);
 
-				L_MOTOR -> setSpeed(200);
-				R_MOTOR -> setSpeed(200);
-			}
-			if (buttnum == 6) {
-				L_MOTOR -> run(BACKWARD);
-				R_MOTOR -> run(BACKWARD);
-
-				L_MOTOR -> setSpeed(200);
-				R_MOTOR -> setSpeed(200);
-			}
-			if (buttnum == 7) {
-				L_MOTOR -> run(BACKWARD);
-				R_MOTOR -> run(FORWARD);
-
-				L_MOTOR -> setSpeed(64);
-				R_MOTOR -> setSpeed(64);
-			}
-			if (buttnum == 8) {
-				L_MOTOR -> run(FORWARD);
-				R_MOTOR -> run(BACKWARD);
-
-				L_MOTOR -> setSpeed(64);
-				R_MOTOR -> setSpeed(64);
-			}
+			L_MOTOR -> setSpeed(200);
+			R_MOTOR -> setSpeed(200);
 		}
-		else {
-			isMoving = false;
-			L_MOTOR -> run(RELEASE);
-			R_MOTOR -> run(RELEASE);
+		if (buttnum == 6) {
+			L_MOTOR -> run(BACKWARD);
+			R_MOTOR -> run(BACKWARD);
+
+			L_MOTOR -> setSpeed(200);
+			R_MOTOR -> setSpeed(200);
 		}
-		return true;
+		if (buttnum == 7) {
+			L_MOTOR -> run(BACKWARD);
+			R_MOTOR -> run(FORWARD);
+
+			L_MOTOR -> setSpeed(32);
+			R_MOTOR -> setSpeed(32);
+		}
+		if (buttnum == 8) {
+			L_MOTOR -> run(FORWARD);
+			R_MOTOR -> run(BACKWARD);
+
+			L_MOTOR -> setSpeed(32);
+			R_MOTOR -> setSpeed(32);
+		}
 	}
-	return false;
+	else {
+		isMoving = false;
+		L_MOTOR -> run(RELEASE);
+		R_MOTOR -> run(RELEASE);
+	}
+	return true;
 }
 
 void BLEsetup()
